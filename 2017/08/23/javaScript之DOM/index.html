@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javaScript,html," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="dom对象的innerText和innerHTML有什么区别？innerText返回的是元素所包含的文本内容，多层次时会按元素由浅入深的顺序将文本内容拼接起来innerHTML返回的是整个元素的结构 elem.children和elem.childNodes的区别？elem.children : 它返回指定元素的子元素集合，它只返回HTML节点elem.childNodes : 它返回指定元素的子">
+<meta name="keywords" content="javaScript,html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS DOM">
+<meta property="og:url" content="http://yoursite.com/2017/08/23/javaScript之DOM/index.html">
+<meta property="og:site_name" content="Insist">
+<meta property="og:description" content="dom对象的innerText和innerHTML有什么区别？innerText返回的是元素所包含的文本内容，多层次时会按元素由浅入深的顺序将文本内容拼接起来innerHTML返回的是整个元素的结构 elem.children和elem.childNodes的区别？elem.children : 它返回指定元素的子元素集合，它只返回HTML节点elem.childNodes : 它返回指定元素的子">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5736009-0d095ccfd34c343d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5736009-fc4fd73cc2c47700.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-04-04T12:31:44.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS DOM">
+<meta name="twitter:description" content="dom对象的innerText和innerHTML有什么区别？innerText返回的是元素所包含的文本内容，多层次时会按元素由浅入深的顺序将文本内容拼接起来innerHTML返回的是整个元素的结构 elem.children和elem.childNodes的区别？elem.children : 它返回指定元素的子元素集合，它只返回HTML节点elem.childNodes : 它返回指定元素的子">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5736009-0d095ccfd34c343d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/23/javaScript之DOM/"/>
+
+
+
+
+
+  <title>JS DOM | Insist</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Insist</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微微风簇浪 散作满星河</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/23/javaScript之DOM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="马江波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://s1.ax1x.com/2018/04/03/CSvn3D.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Insist">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JS DOM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T19:33:24+08:00">
+                2017-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="dom对象的innerText和innerHTML有什么区别？"><a href="#dom对象的innerText和innerHTML有什么区别？" class="headerlink" title="dom对象的innerText和innerHTML有什么区别？"></a>dom对象的innerText和innerHTML有什么区别？</h4><p>innerText返回的是元素所包含的文本内容，多层次时会按元素由浅入深的顺序将文本内容拼接起来<br>innerHTML返回的是整个元素的结构</p>
+<h4 id="elem-children和elem-childNodes的区别？"><a href="#elem-children和elem-childNodes的区别？" class="headerlink" title="elem.children和elem.childNodes的区别？"></a><code>elem.children</code>和<code>elem.childNodes</code>的区别？</h4><p><code>elem.children</code> : 它返回指定元素的子元素集合，它只返回HTML节点<br><code>elem.childNodes</code> : 它返回指定元素的子元素集合，包括HTML节点，所有属性，文本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;    </span><br><span class="line">    &lt;h1&gt;Hello&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;abcabc&lt;/p&gt;</span><br><span class="line">&lt;/body</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5736009-0d095ccfd34c343d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="查询元素有几种常见的方法？ES5的元素选择方法是什么"><a href="#查询元素有几种常见的方法？ES5的元素选择方法是什么" class="headerlink" title="查询元素有几种常见的方法？ES5的元素选择方法是什么?"></a>查询元素有几种常见的方法？ES5的元素选择方法是什么?</h4><p><code>gatElementById()</code>:匹配指定ID属性的元素节点。如果没有发现匹配的节点，则返回null<br><code>getElementsByName()</code>：选择拥有name属性的HTML元素，比如form、img、frame、embed和object，返回一个NodeList格式的对象，不会实时反映元素的变化。<br><code>getElementsByClassName()</code>:匹配一个类似数组的对象，包括了所有class名字符合指定条件的元素（搜索范围包括本身），元素的变化实时反映在返回结果中。这个方法不仅可以在document对象上调用，也可以在任何元素节点上调用<br><code>getElementsByTagName()</code>:返回所有指定标签的元素（搜索范围包括本身）。返回值是一个HTMLCollection对象，也就是说，搜索结果是一个动态集合，任何元素的变化都会实时反映在返回的集合中。这个方法不仅可以在document对象上调用，也可以在任何元素节点上调用。</p>
+<p><strong>ES5中元素选择方法</strong>：</p>
+<p><code>querySelector()</code>：querySelector方法返回匹配指定的CSS选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回null。</p>
+<p><code>querySelectorAll()</code>：返回匹配指定的CSS选择器的所有节点，返回的是NodeList类型的对象。NodeList对象不是动态集合，所以元素节点的变化无法实时反映在返回结果中。</p>
+<h4 id="如何创建一个元素？如何给元素设置属性？如何删除属性"><a href="#如何创建一个元素？如何给元素设置属性？如何删除属性" class="headerlink" title="如何创建一个元素？如何给元素设置属性？如何删除属性"></a>如何创建一个元素？如何给元素设置属性？如何删除属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var elem = document.createElement(&apos;div&apos;)  //创建元素</span><br><span class="line">elem.setAttribute(&apos;class&apos;,&apos;box&apos;)      //设置属性 </span><br><span class="line">console.log(elem)   //  &lt;div class = &quot;box&quot;&gt;&lt;/div&gt;</span><br><span class="line">elem.removeAttribute(&apos;class&apos;)   //删除属性</span><br><span class="line">console.log(elem)    //  &lt;div&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="如何给页面元素添加子元素？如何删除页面元素下的子元素"><a href="#如何给页面元素添加子元素？如何删除页面元素下的子元素" class="headerlink" title="如何给页面元素添加子元素？如何删除页面元素下的子元素"></a>如何给页面元素添加子元素？如何删除页面元素下的子元素</h4><p><code>appendChild()</code> : 在元素的末尾添加子元素<br><code>insertBefore()</code>  :在元素之前添加元素<br><code>replaceChild()</code> :在元素中替换某个元素</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5736009-fc4fd73cc2c47700.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="element-classList有哪些方法？如何判断一个元素的-class-列表中是包含某个-class？如何添加一个class？如何删除一个class"><a href="#element-classList有哪些方法？如何判断一个元素的-class-列表中是包含某个-class？如何添加一个class？如何删除一个class" class="headerlink" title="element.classList有哪些方法？如何判断一个元素的 class 列表中是包含某个 class？如何添加一个class？如何删除一个class?"></a>element.classList有哪些方法？如何判断一个元素的 class 列表中是包含某个 class？如何添加一个class？如何删除一个class?</h4><p><code>classList.add(&quot;calss1,class2&quot;)</code>：为元素添加class,添加多个以逗号分隔<br><code>calssList.contains(&quot;clsss1&quot;)</code> ： 判断元素是否包含此class,return true or false<br><code>classList.item(index)</code> ： 获取元素class，通过下标<br><code>classList.remove(&quot;class1,class2&quot;)</code> ： 移除元素的class<br><code>clssList.toggle(&quot;calss,ture|false&quot;)</code> ： 切换元素class，第一个参数为要移除的类名，返回flase，如果没有此class，则会在元素中添加类名，并返回ture。<br>第二个参数为布尔值，用于强制添加或者删除（无论此类名是否存在），值为ture，则为强制添加，若为flase，则为强制删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var newDiv = document.createElement(&quot;div&quot;)</span><br><span class="line">newDiv.classList.add(&quot;class1&quot;,&quot;class2&quot;)   //添加class</span><br><span class="line">newDiv.classList.contains(&quot;class1&quot;)  // 判断元素是否包含class1，返回ture</span><br><span class="line">newDiv.classList.remove(&quot;class2&quot;)  //   移除class2</span><br></pre></td></tr></table></figure></p>
+<h4 id="如何选中如下代码所有的li元素？-如何选中btn元素？"><a href="#如何选中如下代码所有的li元素？-如何选中btn元素？" class="headerlink" title="如何选中如下代码所有的li元素？ 如何选中btn元素？"></a>如何选中如下代码所有的li元素？ 如何选中btn元素？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;mod-tabs&quot;&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;list1&lt;/li&gt;</span><br><span class="line">        &lt;li&gt;list2&lt;/li&gt;</span><br><span class="line">        &lt;li&gt;list3&lt;/li&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">    &lt;button class=&quot;btn&quot;&gt;点我&lt;/button&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &lt;script&gt;</span><br><span class="line">   // document.getElementsByTagName(&quot;li&quot;)</span><br><span class="line">    document.querySelectorAll(&quot;li&quot;)  </span><br><span class="line">    document.querySelector(&quot;.btn&quot;)  </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javaScript/" rel="tag"># javaScript</a>
+          
+            <a href="/tags/html/" rel="tag"># html</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/13/JS知识点整理4/" rel="next" title="JS随机数 日期函数 数组方法">
+                <i class="fa fa-chevron-left"></i> JS随机数 日期函数 数组方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/23/JS正则/" rel="prev" title="JS 正则表达式">
+                JS 正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://s1.ax1x.com/2018/04/03/CSvn3D.png"
+                alt="马江波" />
+            
+              <p class="site-author-name" itemprop="name">马江波</p>
+              <p class="site-description motion-element" itemprop="description">一枚前端</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#dom对象的innerText和innerHTML有什么区别？"><span class="nav-number">1.</span> <span class="nav-text">dom对象的innerText和innerHTML有什么区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#elem-children和elem-childNodes的区别？"><span class="nav-number">2.</span> <span class="nav-text">elem.children和elem.childNodes的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询元素有几种常见的方法？ES5的元素选择方法是什么"><span class="nav-number">3.</span> <span class="nav-text">查询元素有几种常见的方法？ES5的元素选择方法是什么?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何创建一个元素？如何给元素设置属性？如何删除属性"><span class="nav-number">4.</span> <span class="nav-text">如何创建一个元素？如何给元素设置属性？如何删除属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何给页面元素添加子元素？如何删除页面元素下的子元素"><span class="nav-number">5.</span> <span class="nav-text">如何给页面元素添加子元素？如何删除页面元素下的子元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#element-classList有哪些方法？如何判断一个元素的-class-列表中是包含某个-class？如何添加一个class？如何删除一个class"><span class="nav-number">6.</span> <span class="nav-text">element.classList有哪些方法？如何判断一个元素的 class 列表中是包含某个 class？如何添加一个class？如何删除一个class?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何选中如下代码所有的li元素？-如何选中btn元素？"><span class="nav-number">7.</span> <span class="nav-text">如何选中如下代码所有的li元素？ 如何选中btn元素？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">马江波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
