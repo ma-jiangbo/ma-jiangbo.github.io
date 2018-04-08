@@ -1825,7 +1825,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #f9c;
+  background: #ee9488;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2907,10 +2907,6 @@ hr {
     text-align: center;
   }
 }
-@font-face {
-  font-family: Zitiming;
-  src: url("/fonts/Zitiming.ttf");
-}
 .site-title {
   font-family: 'Zitiming' !important;
 }
@@ -2937,4 +2933,8 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+#footer {
+  padding: 8px 0;
+  min-height: 0;
 }
