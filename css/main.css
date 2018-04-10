@@ -1825,7 +1825,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #eca782;
+  background: #d7bef1;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2909,13 +2909,6 @@ hr {
 }
 .site-title {
   font-family: 'Zitiming' !important;
-}
-body {
-  background: url("https://s1.ax1x.com/2018/04/05/CCPfSI.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
 }
 .content {
   border-radius: 5px;
